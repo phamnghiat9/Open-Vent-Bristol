@@ -1,4 +1,4 @@
-#include "StateMachine.hpp"
+#include "state_machine.hpp"
 #include <array>
 #include <iostream>
 

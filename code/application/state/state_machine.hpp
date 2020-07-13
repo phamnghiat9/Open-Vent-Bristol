@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include <array>
-#include "State.hpp"
-#include "Transition.hpp"
+#include "state.hpp"
+#include "transition.hpp"
 
 namespace application { namespace state {
 
