@@ -71,3 +71,48 @@ static void motor_pwm_init(void)
   MOTOR_PWM_STOP();
   LL_TIM_CC_EnableChannel(TIM2, LL_TIM_CHANNEL_CH1);
 }
+
+// Set up a PWM output to produce a continuous 880Hz tone
+static void sounder_pwm_init(void)
+{
+  // Enable clock - TODO
+  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM????);
+
+  // Reset TIM???? peripheral
+  LL_TIM_DeInit(TIM????);
+
+  LL_TIM_InitTypeDef tim_init_struct =
+  {
+    .Prescaler = SOUNDER_PWM_PRESCALER,
+    .CounterMode = LL_TIM_COUNTERMODE_UP,
+    .Autoreload = SOUNDER_PWM_TOP,
+    .ClockDivision = LL_TIM_CLOCKDIVISION_DIV1,
+    .RepetitionCounter = 0u
+  };
+
+  LL_TIM_Init(TIM????, &tim_init_struct);
+
+  // Enable continuous reload (i.e. not one-shot)
+  LL_TIM_EnableARRPreload(TIM????);
+
+  LL_TIM_OC_InitTypeDef oc_init_struct =
+  {
+    .OCMode = LL_TIM_OCMODE_PWM1,
+    .OCState = LL_TIM_OCSTATE_DISABLE,
+    .OCNState = LL_TIM_OCSTATE_DISABLE,
+    .CompareValue = (LL_TIM_GetAutoReload(TIM????) / 2),
+    .OCPolarity = LL_TIM_OCPOLARITY_HIGH,
+    .OCNPolarity = LL_TIM_OCPOLARITY_HIGH,
+    .OCIdleState = LL_TIM_OCIDLESTATE_LOW,
+    .OCNIdleState = LL_TIM_OCIDLESTATE_LOW
+  };
+
+  LL_TIM_OC_Init(TIM????, LL_TIM_CHANNEL_CH????, &oc_init_struct);
+
+  // Enable autoreload of the compare value (duty cycle)
+  LL_TIM_OC_EnablePreload(TIM????, LL_TIM_CHANNEL_CH????);
+
+  // Enable PWM output
+  SOUNDER_PWM_STOP();
+  LL_TIM_CC_EnableChannel(TIM????, LL_TIM_CHANNEL_CH????);
+}
